@@ -156,6 +156,7 @@
     if (!form.reportValidity()) return;
     if (!selectedTopic || /[\r\n]/.test(selectedTopic)) return setStatus('请选择已有主题或填写新主题。', 'error');
     if (requestedSlug && !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(requestedSlug)) return setStatus('链接名只能使用小写英文字母、数字和连字符。', 'error');
+    if (body.value.split(/\r?\n/).some(line => /^\s*＃/.test(line))) return setStatus('正文中有以全角 ＃ 开头的行。Markdown 标题要用半角 #，请修改后再发布。', 'error');
     if (!accessToken) return setStatus('请先粘贴 GitHub 令牌。', 'error');
 
     const now = new Date();
