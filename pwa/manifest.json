@@ -1,7 +1,7 @@
 {
-  "name": "Hux Blog",
-  "short_name": "Hux Blog",
-  "description": "About an engineer & designer who loves web.",
+  "name": "藏原鱼的博客",
+  "short_name": "藏原鱼",
+  "description": "藏原鱼的个人博客与写作台。",
   "icons": [{
     "src": "icons/128.png",
     "sizes": "128x128",
@@ -15,5 +15,10 @@
   "theme_color": "#000",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait"
+  "orientation": "portrait",
+  "shortcuts": [{
+    "name": "写文章",
+    "short_name": "写文章",
+    "url": "/writer/"
+  }]
 }

@@ -1,0 +1,78 @@
+---
+layout: writer
+title: 写文章
+description: 在手机或电脑上写 Markdown，直接发布到博客。
+permalink: /writer/
+hide-in-nav: true
+---
+
+<main class="writer-page">
+  <div class="writer-shell">
+    <header class="writer-heading">
+      <p class="writer-eyebrow">DAVID BLOG · 写作台</p>
+      <h1>写文章</h1>
+      <p>写好后直接提交到博客仓库。GitHub Pages 会按现有 Jekyll 流程发布文章。</p>
+    </header>
+
+    <form id="writer-form" class="writer-card" autocomplete="off">
+      <div class="writer-row">
+        <label for="post-title">标题 <span aria-hidden="true">*</span></label>
+        <input id="post-title" name="title" maxlength="120" required placeholder="这篇文章想讲什么？">
+      </div>
+
+      <div class="writer-row">
+        <label for="post-subtitle">副标题（可选）</label>
+        <input id="post-subtitle" name="subtitle" maxlength="160" placeholder="用一句话说明文章的重点">
+      </div>
+
+      <div class="writer-grid">
+        <div class="writer-row">
+          <label for="post-topic">主题 <span aria-hidden="true">*</span></label>
+          <select id="post-topic" name="topic" required>
+            <option value="">选择已有主题</option>
+            {% for tag in site.tags %}
+            <option value="{{ tag[0] | escape }}">{{ tag[0] | escape }}</option>
+            {% endfor %}
+            <option value="__new__">＋ 新建主题</option>
+          </select>
+        </div>
+        <div class="writer-row" id="new-topic-row" hidden>
+          <label for="new-topic">新主题名称 <span aria-hidden="true">*</span></label>
+          <input id="new-topic" name="new-topic" maxlength="40" placeholder="例如：学习笔记">
+        </div>
+      </div>
+      <p class="writer-help">主题使用博客现有的标签机制，发布后会出现在归档页。</p>
+
+      <div class="writer-row">
+        <label for="post-slug">链接名（可选）</label>
+        <input id="post-slug" name="slug" inputmode="url" autocapitalize="none" spellcheck="false" placeholder="例如 my-first-note">
+        <p class="writer-help">只用小写英文字母、数字和连字符。留空则自动生成唯一链接名。</p>
+      </div>
+
+      <div class="writer-row">
+        <label for="post-body">正文 Markdown <span aria-hidden="true">*</span></label>
+        <textarea id="post-body" name="body" rows="18" required spellcheck="false" placeholder="# 第一节&#10;&#10;从这里开始写……"></textarea>
+        <p class="writer-help">标题、主题和正文会自动保存在这台设备的浏览器中。令牌不会保存。</p>
+      </div>
+
+      <details class="writer-preview">
+        <summary>预览将提交的 Markdown 文件</summary>
+        <pre id="post-preview"></pre>
+      </details>
+
+      <div class="writer-auth">
+        <label for="github-token">GitHub Fine-grained PAT <span aria-hidden="true">*</span></label>
+        <input id="github-token" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="粘贴令牌，发布后即可清除">
+        <p class="writer-help">在 <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener noreferrer">GitHub 创建 Fine-grained PAT</a>，仓库只选 gymdarius.github.io，Contents 设为 Read and write。令牌仅用于直接请求 GitHub API，不会写进文章、草稿或网站文件。</p>
+      </div>
+
+      <p class="writer-target">目标文件：<code id="post-path"></code></p>
+      <div class="writer-actions">
+        <button id="publish-button" type="submit">发布到 GitHub</button>
+        <button id="clear-button" type="button" class="writer-secondary">清空本机草稿</button>
+      </div>
+      <p id="writer-status" class="writer-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</main>
+

@@ -170,6 +170,25 @@ self.addEventListener('fetch', event => {
   // Skip some of cross-origin requests, like those for Google Analytics.
   if (HOSTNAME_WHITELIST.indexOf(new URL(event.request.url).hostname) > -1) {
 
+    // The writing page must pick up newly published topics and code updates immediately.
+    // Keep an offline copy, but prefer the network whenever it is available.
+    const requestUrl = new URL(event.request.url);
+    if (requestUrl.origin === self.location.origin && [
+      '/writer/', '/js/writer.js', '/css/writer.css'
+    ].includes(requestUrl.pathname)) {
+      const network = fetch(event.request, { cache: 'no-store' });
+      event.waitUntil(
+        network.then(response => {
+          if (!response.ok) return;
+          const copy = response.clone();
+          return caches.open(CACHE).then(cache => cache.put(event.request, copy));
+        })
+          .catch(() => {})
+      );
+      event.respondWith(network.catch(() => caches.match(event.request)));
+      return;
+    }
+
     // Redirect in SW manually fixed github pages 404s on repo?blah
     if (shouldRedirect(event.request)) {
       event.respondWith(Response.redirect(getRedirectUrl(event.request)))
